@@ -30,6 +30,10 @@ class AutoRun:
 
     def enter(self, e):
         self.boy.wait_start_time = get_time()   # get_time() 은 프로그램 실행 시작부터 시간을 반환 (초단위)
+        if self.boy.face_dir == 1:
+            self.boy.dir = 1
+        else:
+            self.boy.dir = -1
 
     def exit(self, e):
         pass
