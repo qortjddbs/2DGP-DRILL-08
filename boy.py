@@ -143,7 +143,7 @@ class Boy:
                 self.SLEEP: {space_down: self.IDLE, right_down: self.RUN, left_down: self.RUN},    # SLEEP일 때 space_down 이벤트가 오면 IDLE로 상태 변경
                 self.IDLE: {a_down: self.AUTORUN, right_up: self.RUN, left_up: self.RUN, right_down: self.RUN, left_down: self.RUN, time_out: self.SLEEP},
                 self.RUN: {right_down: self.IDLE, left_down: self.IDLE, right_up: self.IDLE, left_up: self.IDLE},
-                self.AUTORUN: {time_out: self.IDLE}
+                self.AUTORUN: {right_down: self.RUN, left_down: self.RUN, time_out: self.IDLE}
             })
 
     def update(self):
