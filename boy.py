@@ -28,22 +28,19 @@ class AutoRun:
     def __init__(self, boy):
         self.boy = boy
 
-    def enter(self, e): # 왼쪽 키를 눌러서 왔는지, 오른쪽 키를 눌러서 왔는지 확인 (e)
-        if right_down(e) or left_up(e):
-            self.boy.dir = self.boy.face_dir = 1
-        elif left_down(e) or right_up(e):
-            self.boy.dir = self.boy.face_dir = -1
+    def enter(self, e):
+        pass
 
     def exit(self, e):
         pass
 
-    def do(self): # 2초가 경과하면 SLEEP상태로 전환
+    def do(self):
         self.boy.frame = (self.boy.frame + 1) % 8
         self.boy.x += self.boy.dir * 5
 
     def draw(self):
         if self.boy.face_dir == 1: # right
-            self.boy.image.clip_draw(self.boy.frame * 100, 100, 100, 100, self.boy.x, self.boy.y)
+            self.boy.image.clip_composite_draw(self.boy.frame * 100, 100, 100, 100, 0, '',self.boy.x, self.boy.y, 300, 300)
         else: # face_dir == -1: # left
             self.boy.image.clip_draw(self.boy.frame * 100, 0, 100, 100, self.boy.x, self.boy.y)
 
@@ -67,9 +64,9 @@ class Run:
 
     def draw(self):
         if self.boy.face_dir == 1: # right
-            self.boy.image.clip_draw(self.boy.frame * 100, 100, 100, 100, self.boy.x, self.boy.y)
+            self.boy.image.clip_composite_draw(self.boy.frame * 100, 100, 100, 100, 0, '',self.boy.x, self.boy.y + 70, 300, 300)
         else: # face_dir == -1: # left
-            self.boy.image.clip_draw(self.boy.frame * 100, 0, 100, 100, self.boy.x, self.boy.y)
+            self.boy.image.clip_composite_draw(self.boy.frame * 100, 0, 100, 100, 0, '',self.boy.x, self.boy.y + 70, 300, 300)
 
 class Sleep:
 
