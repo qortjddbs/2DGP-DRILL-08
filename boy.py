@@ -41,6 +41,12 @@ class AutoRun:
     def do(self):
         self.boy.frame = (self.boy.frame + 1) % 8
         self.boy.x += self.boy.dir * 10
+        if self.boy.x > 700:
+            self.boy.dir = -1
+            self.boy.face_dir = -1
+        elif self.boy.x < 100:
+            self.boy.dir = 1
+            self.boy.face_dir = 1
         if get_time() - self.boy.wait_start_time > 1.0:
             self.boy.state_machine.handle_state_event(('TIME_OUT', None))
 
