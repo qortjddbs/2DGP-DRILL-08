@@ -29,7 +29,7 @@ class AutoRun:
         self.boy = boy
 
     def enter(self, e):
-        pass
+        self.boy.wait_start_time = get_time()   # get_time() 은 프로그램 실행 시작부터 시간을 반환 (초단위)
 
     def exit(self, e):
         pass
@@ -37,6 +37,8 @@ class AutoRun:
     def do(self):
         self.boy.frame = (self.boy.frame + 1) % 8
         self.boy.x += self.boy.dir * 10
+        if get_time() - self.boy.wait_start_time > 1.0:
+            self.boy.state_machine.handle_state_event(('TIME_OUT', None))
 
     def draw(self):
         if self.boy.face_dir == 1: # right
@@ -59,7 +61,7 @@ class Run:
     def exit(self, e):
         pass
 
-    def do(self): # 2초가 경과하면 SLEEP상태로 전환
+    def do(self):
         self.boy.frame = (self.boy.frame + 1) % 8
         self.boy.x += self.boy.dir * 5
 
@@ -131,12 +133,11 @@ class Boy:
                 self.SLEEP: {space_down: self.IDLE, right_down: self.RUN, left_down: self.RUN},    # SLEEP일 때 space_down 이벤트가 오면 IDLE로 상태 변경
                 self.IDLE: {a_down: self.AUTORUN, right_up: self.RUN, left_up: self.RUN, right_down: self.RUN, left_down: self.RUN, time_out: self.SLEEP},
                 self.RUN: {right_down: self.IDLE, left_down: self.IDLE, right_up: self.IDLE, left_up: self.IDLE},
-                self.AUTORUN: {}
+                self.AUTORUN: {time_out: self.IDLE}
             })
 
     def update(self):
         self.state_machine.update()
-
 
     def draw(self):
         self.state_machine.draw()
