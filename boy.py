@@ -24,7 +24,28 @@ def left_up(e):
     return e[0] == 'INPUT' and e[1].type == SDL_KEYUP and e[1].key == SDLK_LEFT
 
 class AutoRun:
-    pass
+
+    def __init__(self, boy):
+        self.boy = boy
+
+    def enter(self, e): # 왼쪽 키를 눌러서 왔는지, 오른쪽 키를 눌러서 왔는지 확인 (e)
+        if right_down(e) or left_up(e):
+            self.boy.dir = self.boy.face_dir = 1
+        elif left_down(e) or right_up(e):
+            self.boy.dir = self.boy.face_dir = -1
+
+    def exit(self, e):
+        pass
+
+    def do(self): # 2초가 경과하면 SLEEP상태로 전환
+        self.boy.frame = (self.boy.frame + 1) % 8
+        self.boy.x += self.boy.dir * 5
+
+    def draw(self):
+        if self.boy.face_dir == 1: # right
+            self.boy.image.clip_draw(self.boy.frame * 100, 100, 100, 100, self.boy.x, self.boy.y)
+        else: # face_dir == -1: # left
+            self.boy.image.clip_draw(self.boy.frame * 100, 0, 100, 100, self.boy.x, self.boy.y)
 
 class Run:
 
@@ -105,11 +126,12 @@ class Boy:
         self.IDLE = Idle(self)
         self.SLEEP = Sleep(self)
         self.RUN = Run(self)
+        self.AUTORUN = AutoRun(self)
         self.state_machine = StateMachine(  # StateMachine에서는 말그대로 상태 전환만 담당
             self.IDLE, # 시작 상태
             {
                 self.SLEEP: {space_down: self.IDLE, right_down: self.RUN, left_down: self.RUN},    # SLEEP일 때 space_down 이벤트가 오면 IDLE로 상태 변경
-                self.IDLE: {right_up: self.RUN, left_up: self.RUN, right_down: self.RUN, left_down: self.RUN, time_out: self.SLEEP},
+                self.IDLE: {a_down: self.AUTORUN, right_up: self.RUN, left_up: self.RUN, right_down: self.RUN, left_down: self.RUN, time_out: self.SLEEP},
                 self.RUN: {right_down: self.IDLE, left_down: self.IDLE, right_up: self.IDLE, left_up: self.IDLE}
             })
 
