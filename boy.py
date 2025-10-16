@@ -36,13 +36,14 @@ class AutoRun:
 
     def do(self):
         self.boy.frame = (self.boy.frame + 1) % 8
-        self.boy.x += self.boy.dir * 5
+        self.boy.x += self.boy.dir * 10
 
     def draw(self):
         if self.boy.face_dir == 1: # right
-            self.boy.image.clip_composite_draw(self.boy.frame * 100, 100, 100, 100, 0, '',self.boy.x, self.boy.y, 300, 300)
+            self.boy.image.clip_composite_draw(self.boy.frame * 100, 100, 100, 100, 0, '',self.boy.x, self.boy.y + 70, 300, 300)
         else: # face_dir == -1: # left
-            self.boy.image.clip_draw(self.boy.frame * 100, 0, 100, 100, self.boy.x, self.boy.y)
+            self.boy.image.clip_composite_draw(self.boy.frame * 100, 0, 100, 100, 0, '',self.boy.x, self.boy.y + 70, 300, 300)
+
 
 class Run:
 
@@ -64,9 +65,9 @@ class Run:
 
     def draw(self):
         if self.boy.face_dir == 1: # right
-            self.boy.image.clip_composite_draw(self.boy.frame * 100, 100, 100, 100, 0, '',self.boy.x, self.boy.y + 70, 300, 300)
+            self.boy.image.clip_draw(self.boy.frame * 100, 100, 100, 100, self.boy.x, self.boy.y)
         else: # face_dir == -1: # left
-            self.boy.image.clip_composite_draw(self.boy.frame * 100, 0, 100, 100, 0, '',self.boy.x, self.boy.y + 70, 300, 300)
+            self.boy.image.clip_draw(self.boy.frame * 100, 0, 100, 100, self.boy.x, self.boy.y)
 
 class Sleep:
 
@@ -129,7 +130,8 @@ class Boy:
             {
                 self.SLEEP: {space_down: self.IDLE, right_down: self.RUN, left_down: self.RUN},    # SLEEP일 때 space_down 이벤트가 오면 IDLE로 상태 변경
                 self.IDLE: {a_down: self.AUTORUN, right_up: self.RUN, left_up: self.RUN, right_down: self.RUN, left_down: self.RUN, time_out: self.SLEEP},
-                self.RUN: {right_down: self.IDLE, left_down: self.IDLE, right_up: self.IDLE, left_up: self.IDLE}
+                self.RUN: {right_down: self.IDLE, left_down: self.IDLE, right_up: self.IDLE, left_up: self.IDLE},
+                self.AUTORUN: {}
             })
 
     def update(self):
