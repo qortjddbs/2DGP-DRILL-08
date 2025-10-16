@@ -56,7 +56,6 @@ class AutoRun:
         else: # face_dir == -1: # left
             self.boy.image.clip_composite_draw(self.boy.frame * 100, 0, 100, 100, 0, '',self.boy.x, self.boy.y + 70, 300, 300)
 
-
 class Run:
 
     def __init__(self, boy):
